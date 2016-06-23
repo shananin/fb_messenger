@@ -12,5 +12,6 @@ install:
 #before_script:
 #    - pylint src/fb_messenger
 script:
-  - nosetests --with-coverage src/fb_messenger/test
+  - nosetests src/fb_messenger/test
+  - coverage run --source=fb_messenger
 after_success: coveralls
