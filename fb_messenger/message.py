@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import notification_type as nt
 from interfaces import IFBPayload
 
@@ -18,10 +19,10 @@ class Message(object):
             'notification_type': self.notification_type,
         }
 
-        if type(self.text) is str or type(self.text) is unicode:
+        if isinstance(self.text, str):
             data['message']['text'] = self.text
 
-        if type(self.attachment) is str or type(self.attachment) is unicode:
+        if isinstance(self.attachment, str):
             data['message']['text'] = self.attachment
 
         if isinstance(self.attachment, IFBPayload):

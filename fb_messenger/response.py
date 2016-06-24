@@ -1,4 +1,6 @@
+import const
 import json
+from fb_messenger.exceptions import FBIncorrectResponse
 
 
 class Response(object):
@@ -6,12 +8,13 @@ class Response(object):
     message_id = None
 
     def __init__(self, response):
-        if type(response) is str:
-            response = json.loads(response)
-
+        response = json.loads(response)
         self.response = response
 
-    def parse(self):
-        self.recipient_id = self.response['recipient_id']
-        self.message_id = self.response['message_id']
-        return self
+        if const.RECIPIENT_ID_KEY not in response or const.RECIPIENT_ID_KEY not in response:
+            raise FBIncorrectResponse('Response doesn\'t contain % or %'.format(
+                const.RECIPIENT_ID_KEY, const.MESSAGE_ID_KEY
+            ))
+
+        self.recipient_id = self.response[const.RECIPIENT_ID_KEY]
+        self.message_id = self.response[const.RECIPIENT_ID_KEY]

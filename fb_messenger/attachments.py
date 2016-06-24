@@ -1,8 +1,14 @@
-from interfaces import IFBPayload
+from __future__ import unicode_literals
+from six import string_types
+from interfaces import IFBPayload, IButton
+from fb_messenger.exceptions import FBIncorrectType
 
 
 class Image(IFBPayload):
     def __init__(self, image_url):
+        if not isinstance(image_url, string_types):
+            raise FBIncorrectType('image_url should be str')
+
         self.image_url = image_url
 
     def get_dict(self):
@@ -32,6 +38,32 @@ class Buttons(IFBPayload):
                 'text': self.text,
                 'buttons': button_dicts
             }
+        }
+
+
+class ButtonWithWebUrl(IButton):
+    def __init__(self, title, web_url):
+        self.title = title
+        self.web_url = web_url
+
+    def get_dict(self):
+        return {
+            'type': 'web_url',
+            'title': self.title,
+            'url': self.web_url,
+        }
+
+
+class ButtonWithPostback(IButton):
+    def __init__(self, title, payload):
+        self.title = title
+        self.payload = payload
+
+    def get_dict(self):
+        return {
+            'type': 'postback',
+            'title': self.title,
+            'payload': self.payload,
         }
 
 
@@ -91,6 +123,7 @@ class Receipt(IFBPayload):
     """
     TODO: complete receipt attachment
     """
+
     def __init__(self, recipient_name, order_number, currency, payment_method, elements, summary,
                  timestamp=None, order_url=None, address=None, adjustments=None):
         self.recipient_name = recipient_name

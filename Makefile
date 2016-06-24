@@ -1,1 +1,0 @@
-#lint: pylint --errors-only
