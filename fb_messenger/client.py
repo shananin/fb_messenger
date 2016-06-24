@@ -1,7 +1,6 @@
-import requests
-
 import const
 import logger
+import requests
 from response import Response
 from .exceptions import FBRequestFailed
 
