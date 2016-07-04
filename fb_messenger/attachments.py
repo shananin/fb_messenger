@@ -5,6 +5,9 @@ from fb_messenger.exceptions import FBIncorrectType
 
 
 class Image(IFBPayload):
+    """
+
+    """
     def __init__(self, image_url):
         if not isinstance(image_url, string_types):
             raise FBIncorrectType('image_url should be str')
