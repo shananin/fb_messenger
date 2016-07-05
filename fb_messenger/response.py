@@ -1,6 +1,6 @@
 import const
 import json
-from fb_messenger.exceptions import FBIncorrectResponse
+from .exceptions import FBIncorrectResponse
 
 
 class Response(object):

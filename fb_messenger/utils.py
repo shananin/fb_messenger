@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from fb_messenger.interfaces import IFBPayload
+from .interfaces import IFBPayload
 from six import string_types
 
 import logging
