@@ -1,8 +1,5 @@
 from __future__ import unicode_literals
-
-from .interfaces import IFBPayload
 from .utils import validate_callbacks, get_dict_for_message, get_logger
-from six import string_types
 import const
 import requests
 from response import Response

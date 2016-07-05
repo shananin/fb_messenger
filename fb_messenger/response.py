@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import const
 import json
 from .exceptions import FBIncorrectResponse
