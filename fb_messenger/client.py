@@ -37,7 +37,7 @@ class FBMessenger(object):
         return Response(response=r.json())
 
     def create_welcome_message(self, page_id, message):
-        message = message.get_dict()
+        message = message.to_dict()
 
         del message['recipient']
         del message['notification_type']

@@ -41,7 +41,7 @@ def get_dict_for_message(recipient_id, attachment, notification_type):
     if isinstance(attachment, string_types):
         data['message']['text'] = attachment
     elif isinstance(attachment, IFBPayload):
-        data['message']['attachment'] = attachment.get_dict()
+        data['message']['attachment'] = attachment.to_dict()
     else:
         raise TypeError('Attachment must be string or implements IFBPayload')
 

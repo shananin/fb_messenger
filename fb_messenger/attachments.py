@@ -6,7 +6,7 @@ from .exceptions import FBIncorrectType
 
 class Image(IFBPayload):
     """
-
+    
     """
     def __init__(self, image_url):
         if not isinstance(image_url, string_types):
@@ -14,7 +14,7 @@ class Image(IFBPayload):
 
         self.image_url = image_url
 
-    def get_dict(self):
+    def to_dict(self):
         return {
             'type': 'image',
             'payload': {
@@ -28,11 +28,11 @@ class Buttons(IFBPayload):
         self.text = text
         self.buttons = buttons
 
-    def get_dict(self):
+    def to_dict(self):
         button_dicts = []
 
         for button in self.buttons:
-            button_dicts.append(button.get_dict())
+            button_dicts.append(button.to_dict())
 
         return {
             'type': 'template',
@@ -49,7 +49,7 @@ class ButtonWithWebUrl(IButton):
         self.title = title
         self.web_url = web_url
 
-    def get_dict(self):
+    def to_dict(self):
         return {
             'type': 'web_url',
             'title': self.title,
@@ -62,7 +62,7 @@ class ButtonWithPostback(IButton):
         self.title = title
         self.payload = payload
 
-    def get_dict(self):
+    def to_dict(self):
         return {
             'type': 'postback',
             'title': self.title,
@@ -78,7 +78,7 @@ class GenericElement(IFBPayload):
         self.subtitle = subtitle
         self.buttons = buttons
 
-    def get_dict(self):
+    def to_dict(self):
         button_dicts = []
 
         data = {
@@ -96,7 +96,7 @@ class GenericElement(IFBPayload):
 
         if self.buttons:
             for button in self.buttons:
-                button_dicts.append(button.get_dict())
+                button_dicts.append(button.to_dict())
 
             data['buttons'] = button_dicts
 
@@ -107,11 +107,11 @@ class Generic(IFBPayload):
     def __init__(self, elements):
         self.elements = elements
 
-    def get_dict(self):
+    def to_dict(self):
         element_dicts = []
 
         for element in self.elements:
-            element_dicts.append(element.get_dict())
+            element_dicts.append(element.to_dict())
 
         return {
             'type': 'template',
@@ -140,11 +140,11 @@ class Receipt(IFBPayload):
         self.address = address
         self.adjustments = adjustments
 
-    def get_dict(self):
+    def to_dict(self):
         element_dicts = []
 
         for elem in self.elements:
-            element_dicts.append(elem.get_dict())
+            element_dicts.append(elem.to_dict())
 
         data = {
             'type': 'template',
@@ -155,7 +155,7 @@ class Receipt(IFBPayload):
                 'currency': self.currency,
                 'payment_method': self.payment_method,
                 'elements': element_dicts,
-                'summary': self.summary.get_dict(),
+                'summary': self.summary.to_dict(),
             },
         }
 
@@ -166,13 +166,13 @@ class Receipt(IFBPayload):
             data['order_url'] = self.order_url
 
         if self.address:
-            data['address'] = self.address.get_dict()
+            data['address'] = self.address.to_dict()
 
         if self.adjustments:
             adjustments_dicts = []
 
             for elem in self.adjustments:
-                adjustments_dicts.append(elem.get_dict())
+                adjustments_dicts.append(elem.to_dict())
 
             data['adjustments'] = adjustments_dicts
 
@@ -186,7 +186,7 @@ class Summary(IFBPayload):
         self.shipping_cost = shipping_cost
         self.total_tax = total_tax
 
-    def get_dict(self):
+    def to_dict(self):
         data = {
             'total_cost': self.total_cost,
         }
@@ -212,7 +212,7 @@ class ReceiptElement(IFBPayload):
         self.currency = currency
         self.image_url = image_url
 
-    def get_dict(self):
+    def to_dict(self):
         data = {
             'title': self.title,
         }
