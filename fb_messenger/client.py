@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
-from .utils import validate_callbacks, get_dict_for_message, get_logger
-import const
 import requests
-from response import Response
+from .utils import validate_callbacks, get_dict_for_message, get_logger
+from . import const
+from .response import Response
 from .exceptions import FBRequestFailed
-import notification_type as nt
+from . import notification_type as nt
 
 
 class FBMessenger(object):
@@ -25,16 +25,16 @@ class FBMessenger(object):
 
         self.logger.debug(data)
 
-        r = requests.post(
+        request = requests.post(
             url='{}?access_token={}'.format(const.API_FB_MESSAGES_URL, self.access_token),
             json=data,
         )
 
-        if r.status_code >= 300:
-            self.logger.warn(r.text)
-            raise FBRequestFailed(r.text)
+        if request.status_code >= 300:
+            self.logger.warn(request.text)
+            raise FBRequestFailed(request.text)
 
-        return Response(response=r.json())
+        return Response(response=request.json())
 
     def create_welcome_message(self, page_id, message):
         message = message.to_dict()

@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
-import const
 import json
+from . import const
 from .exceptions import FBIncorrectResponse
 
 
@@ -13,7 +13,7 @@ class Response(object):
         self.response = response
 
         if const.RECIPIENT_ID_KEY not in response or const.RECIPIENT_ID_KEY not in response:
-            raise FBIncorrectResponse('Response doesn\'t contain % or %'.format(
+            raise FBIncorrectResponse("Response doesn't contain {} or {}".format(
                 const.RECIPIENT_ID_KEY, const.MESSAGE_ID_KEY
             ))
 

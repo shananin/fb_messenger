@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
+from six import string_types
 import json
 from .exceptions import IncorrectFBRequest, UnknownCallback
 
 
 class CallbacksParser(object):
     def __init__(self, body):
-        if type(body) is str:
+        if isinstance(body, string_types):
             body = json.loads(body)
 
         self.body = body

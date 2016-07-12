@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
-from .interfaces import IFBPayload
 from six import string_types
-
 import logging
+from .interfaces import IFBPayload
 
 
 def get_logger():
