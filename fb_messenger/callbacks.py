@@ -1,3 +1,4 @@
+# pylint: disable=R0903
 from __future__ import unicode_literals
 from six import string_types
 import json

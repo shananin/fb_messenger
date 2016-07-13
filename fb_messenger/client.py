@@ -50,9 +50,9 @@ class FBMessenger(object):
             ],
         }
 
-        r = requests.post(
+        request = requests.post(
             url='https://graph.facebook.com/v2.6/{}/thread_settings?access_token={}'.format(page_id, self.access_token),
             json=data,
         )
 
-        return r.json()
+        return request.json()

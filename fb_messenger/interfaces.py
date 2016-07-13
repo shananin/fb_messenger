@@ -6,5 +6,6 @@ class IFBPayload(object):
         raise NotImplementedError('Should have implemented to_dict method')
 
 
-class IButton(IFBPayload):
-    pass
+class ISubItem(object):
+    def to_dict(self):
+        raise NotImplementedError('Should have implemented to_dict method')

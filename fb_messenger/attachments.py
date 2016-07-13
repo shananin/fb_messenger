@@ -1,7 +1,7 @@
 # pylint: disable=R0903
 from __future__ import unicode_literals
 from six import string_types
-from fb_messenger.interfaces import IFBPayload, IButton
+from fb_messenger.interfaces import IFBPayload, ISubItem
 from fb_messenger.exceptions import FBIncorrectType
 
 
@@ -50,7 +50,7 @@ class Buttons(IFBPayload):
         }
 
 
-class ButtonWithWebUrl(IButton):
+class ButtonWithWebUrl(ISubItem):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
@@ -67,7 +67,7 @@ class ButtonWithWebUrl(IButton):
         }
 
 
-class ButtonWithPostback(IButton):
+class ButtonWithPostback(ISubItem):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
@@ -84,7 +84,7 @@ class ButtonWithPostback(IButton):
         }
 
 
-class GenericElement(IFBPayload):
+class GenericElement(ISubItem):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """
