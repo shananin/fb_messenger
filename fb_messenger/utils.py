@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from six import string_types
 import logging
-from .interfaces import IFBPayload
+from fb_messenger.interfaces import IFBPayload
 
 
 def get_logger():

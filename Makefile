@@ -1,10 +1,16 @@
+install:
+	virtualenv venv && \
+	. venv/bin/activate && \
+	pip install --upgrade pip && \
+	pip install -r requirements.txt
+
 lint:
 	. venv/bin/activate && \
 	pylint fb_messenger
 
-tests:
+test:
 	. venv/bin/activate && \
-	nosetests --cover-branches --with-coverage --cover-erase --cover-package=fb_messenger
+	py.test --cov=fb_messenger tests/
 
 clean:
 	rm -rf venv

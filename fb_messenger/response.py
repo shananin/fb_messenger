@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import json
-from . import const
-from .exceptions import FBIncorrectResponse
+from fb_messenger import const
+from fb_messenger.exceptions import FBIncorrectResponse
 
 
 class Response(object):

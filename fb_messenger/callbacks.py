@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from six import string_types
 import json
-from .exceptions import IncorrectFBRequest, UnknownCallback
+from fb_messenger.exceptions import IncorrectFBRequest, UnknownCallback
 
 
 class CallbacksParser(object):

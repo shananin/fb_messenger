@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 import requests
-from .utils import validate_callbacks, get_dict_for_message, get_logger
-from . import const
-from .response import Response
-from .exceptions import FBRequestFailed
-from . import notification_type as nt
+from fb_messenger.utils import validate_callbacks, get_dict_for_message, get_logger
+from fb_messenger import const
+from fb_messenger.response import Response
+from fb_messenger.exceptions import FBRequestFailed
+from fb_messenger import notification_type as nt
 
 
 class FBMessenger(object):

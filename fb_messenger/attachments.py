@@ -1,8 +1,8 @@
 # pylint: disable=R0903
 from __future__ import unicode_literals
 from six import string_types
-from .interfaces import IFBPayload, IButton
-from .exceptions import FBIncorrectType
+from fb_messenger.interfaces import IFBPayload, IButton
+from fb_messenger.exceptions import FBIncorrectType
 
 
 class Image(IFBPayload):
