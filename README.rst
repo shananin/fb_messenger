@@ -3,11 +3,32 @@ Python API client for FB Messenger (be under development)
 
 [![Build Status](https://travis-ci.org/shananin/Fb_messanger.svg?branch=master)](https://travis-ci.org/shananin/Fb_messanger)
 [![Coverage Status](https://coveralls.io/repos/github/shananin/Fb_messanger/badge.svg?branch=master)](https://coveralls.io/github/shananin/Fb_messanger?branch=master)
+Installation
+~~~~~~~~~~~~
 
-### How to install
+Minimum Requirements
+____________________
+
+-  Python 2.7+ or Python 3.3+
+
+Install from pip
+________________
 
 
-### How to Use
+.. code-block:: sh
+
+    pip install fb_messenger
+
+Build from source
+_________________
 
 
-### How to use with Asyncio
+.. code-block:: sh
+
+    git clone https://github.com/shananin/fb_messenger
+    cd fb_messenger
+    python setup.py install
+
+
+How to Use
+__________
