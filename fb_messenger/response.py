@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import json
 from fb_messenger import const
-from fb_messenger.exceptions import FBIncorrectResponse
+from fb_messenger.exceptions import IncorrectResponse
 
 
 class Response(object):
@@ -13,7 +13,7 @@ class Response(object):
         self.response = response
 
         if const.RECIPIENT_ID_KEY not in response or const.RECIPIENT_ID_KEY not in response:
-            raise FBIncorrectResponse("Response doesn't contain {} or {}".format(
+            raise IncorrectResponse("Response doesn't contain {} or {}".format(
                 const.RECIPIENT_ID_KEY, const.MESSAGE_ID_KEY
             ))
 

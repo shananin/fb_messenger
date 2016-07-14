@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from six import string_types
 from fb_messenger.interfaces import IFBPayload, ISubItem
-from fb_messenger.exceptions import FBIncorrectType
+from fb_messenger.exceptions import IncorrectType
 
 
 class Image(IFBPayload):
@@ -12,7 +12,7 @@ class Image(IFBPayload):
 
     def __init__(self, image_url):
         if not isinstance(image_url, string_types):
-            raise FBIncorrectType('image_url should be str')
+            raise IncorrectType('image_url should be str')
 
         self.image_url = image_url
 

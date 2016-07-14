@@ -15,19 +15,6 @@ def get_logger():
     return logger
 
 
-def validate_callbacks(logger, callbacks):
-    if not isinstance(callbacks, dict):
-        logger.warn('The second parameter should be a dictionary.')
-    for callback in ['authentication', 'received', 'delivery', 'postback']:
-        if callback not in callbacks:
-            logger.warn('The \'' + callback + '\' action is missing.')
-    for callback in callbacks.keys():
-        if not hasattr(callbacks[callback], '__call__'):
-            logger.warn('The \'' + callback +
-                        '\' action should be a function.')
-    return callbacks
-
-
 def get_dict_for_message(recipient_id, attachment, notification_type):
     data = {
         'recipient': {

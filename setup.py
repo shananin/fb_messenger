@@ -45,7 +45,7 @@ if __name__ == "__main__":
             'Topic :: Software Development :: Libraries :: Python Modules'
         ],
         description="Python API client for FB Messenger",
-        long_description=read('README.md'),
+        long_description=read('README.rst'),
         install_requires=[
         ],
         keywords="fb facebook messenger client api chat",

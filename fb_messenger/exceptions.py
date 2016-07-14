@@ -1,22 +1,22 @@
-class FBMainException(Exception):
+class MainException(Exception):
     pass
 
 
-class IncorrectFBRequest(FBMainException):
+class IncorrectRequest(MainException):
     pass
 
 
-class UnknownCallback(FBMainException):
+class UnknownCallback(MainException):
     pass
 
 
-class FBRequestFailed(FBMainException):
+class RequestFailed(MainException):
     pass
 
 
-class FBIncorrectType(FBMainException):
+class IncorrectType(MainException):
     pass
 
 
-class FBIncorrectResponse(FBMainException):
+class IncorrectResponse(MainException):
     pass

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from six import string_types
 import json
-from fb_messenger.exceptions import IncorrectFBRequest, UnknownCallback
+from fb_messenger.exceptions import IncorrectRequest, UnknownCallback
 
 
 class CallbacksParser(object):
@@ -16,11 +16,11 @@ class CallbacksParser(object):
         parsed_requests = []
 
         if 'entry' not in self.body:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         for entry in self.body['entry']:
             if 'messaging' not in entry:
-                raise IncorrectFBRequest
+                raise IncorrectRequest
 
             for message in entry['messaging']:
                 callbacks_factory = CallbacksFactory(message)
@@ -52,7 +52,7 @@ class CallbacksFactory(object):
 class Callback(object):
     def __init__(self, message):
         if ('sender' or 'recipient') not in message:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.user_id = self.sender_id = message['sender']['id']
         self.page_id = self.recipient_id = message['recipient']['id']
@@ -63,12 +63,12 @@ class Authentication(Callback):
         super(Authentication, self).__init__(message)
 
         if ('optin' or 'timestamp') not in message:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.timestamp = message['timestamp']
 
         if 'ref' not in message['optin']:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.ref = message['optin']['ref']
 
@@ -81,7 +81,7 @@ class MessageReceived(Callback):
         super(MessageReceived, self).__init__(message)
 
         if ('mid' or 'seq') not in message['message']:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.mid = message['message']['mid']
         self.seq = message['message']['seq']
@@ -110,7 +110,7 @@ class MessageDelivery(Callback):
         super(MessageDelivery, self).__init__(message)
 
         if ('seq' or 'watermark') not in message['delivery']:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.seq = message['delivery']['seq']
         self.watermark = message['delivery']['watermark']
@@ -124,12 +124,12 @@ class Postback(Callback):
         super(Postback, self).__init__(message)
 
         if ('postback' or 'timestamp') not in message:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.timestamp = message['timestamp']
 
         if 'payload' not in message['postback']:
-            raise IncorrectFBRequest
+            raise IncorrectRequest
 
         self.payload = message['postback']['payload']
 
