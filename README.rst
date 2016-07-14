@@ -1,8 +1,10 @@
 Python API client for FB Messenger (be under development)
 =========================================================
 
-[![Build Status](https://travis-ci.org/shananin/Fb_messanger.svg?branch=master)](https://travis-ci.org/shananin/Fb_messanger)
-[![Coverage Status](https://coveralls.io/repos/github/shananin/Fb_messanger/badge.svg?branch=master)](https://coveralls.io/github/shananin/Fb_messanger?branch=master)
+.. image:: https://travis-ci.org/shananin/Fb_messanger.svg?branch=master
+    :target: https://travis-ci.org/shananin/Fb_messanger
+.. image:: https://coveralls.io/repos/github/shananin/Fb_messanger/badge.svg?branch=master 
+    :target: https://coveralls.io/github/shananin/Fb_messanger?branch=master
 Installation
 ~~~~~~~~~~~~
 
