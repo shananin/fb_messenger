@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
 import logging
 import requests
-from fb_messenger import const
-from fb_messenger.exceptions import RequestFailed, UnknownAction, MessengerAPIError
-from fb_messenger import notification_type as nt
-from fb_messenger import callbacks
-from fb_messenger import callback_types
-from fb_messenger import action_types
+from . import const
+from .exceptions import RequestFailed, UnknownAction, MessengerAPIError
+from . import notification_type as nt
+from . import callbacks
+from . import callback_types
+from . import action_types
 
 
 class FBMessenger(object):
