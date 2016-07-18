@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
+import logging
 import requests
-from fb_messenger.utils import get_dict_for_message, get_logger
 from fb_messenger import const
-from fb_messenger.response import Response
-from fb_messenger.exceptions import RequestFailed
+from fb_messenger.exceptions import RequestFailed, UnknownAction, MessengerAPIError
 from fb_messenger import notification_type as nt
 from fb_messenger import callbacks
 from fb_messenger import callback_types
+from fb_messenger import action_types
 
 
 class FBMessenger(object):
@@ -31,21 +31,23 @@ class FBMessenger(object):
         if logger is not None:
             self.logger = logger
         else:
-            self.logger = get_logger()
+            # TODO: rewrite
+            self.logger = logging.getLogger(__name__)
 
         if logger_level is not None:
             self.logger.setLevel(logger_level)
 
-        self.access_token = access_token
+        self._access_token = access_token
+        self._api_url = const.API_FB_MESSAGES_URL + self._access_token
 
     def send_attachment(self, recipient_id, attachment, notification_type=nt.REGULAR):
-        data = get_dict_for_message(recipient_id, attachment, notification_type)
+        payload = self._format_attachment_payload(recipient_id, attachment, notification_type)
 
-        self.logger.debug(data)
+        self.logger.debug(payload)
 
         request = requests.post(
-            url='{}?access_token={}'.format(const.API_FB_MESSAGES_URL, self.access_token),
-            json=data,
+            url='{}?access_token={}'.format(const.API_FB_MESSAGES_URL, self._access_token),
+            json=payload,
         )
 
         if request.status_code >= 300:
@@ -55,13 +57,13 @@ class FBMessenger(object):
         return Response(response=request.json())
 
     def send_text(self, recipient_id, text, notification_type=nt.REGULAR):
-        data = get_dict_for_message(recipient_id, text, notification_type)
+        payload = self._format_text_payload(recipient_id, text, notification_type)
 
-        self.logger.debug(data)
+        self.logger.debug(payload)
 
         request = requests.post(
-            url='{}?access_token={}'.format(const.API_FB_MESSAGES_URL, self.access_token),
-            json=data,
+            url=const.API_FB_MESSAGES_URL + self._access_token,
+            json=payload,
         )
 
         if request.status_code >= 300:
@@ -69,6 +71,25 @@ class FBMessenger(object):
             raise RequestFailed(request.text)
 
         return Response(response=request.json())
+
+    def send_action(self, recipient_id, sender_action):
+        """
+        Set typing indicators or send read receipts using the Send API,
+        to let users know you are processing their request.
+
+
+        :param recipient_id: user id
+        :param sender_action: look fb_messenger.action_types
+        :return Response:
+        """
+        if sender_action not in action_types.ALL_ACTIONS:
+            raise UnknownAction
+
+        response_dict = self._send_request(
+            self._format_action_payload(recipient_id, sender_action)
+        )
+
+        return Response(response_dict)
 
     def process_message(self, body):
         self.logger.debug(body)
@@ -89,22 +110,84 @@ class FBMessenger(object):
         return decorator
 
     def create_welcome_message(self, page_id, message):
-        message = message.to_dict()
+        payload = self._format_welcome_message(message)
 
-        del message['recipient']
-        del message['notification_type']
+        request = requests.post(
+            url='https://graph.facebook.com/v2.6/{}/thread_settings?access_token={}'.format(page_id,
+                                                                                            self._access_token),
+            json=payload,
+        )
 
-        data = {
+        return request.status_code, request.json()
+
+    def _send_request(self, payload):
+        request = requests.post(
+            url=self._api_url,
+            json=payload,
+        )
+
+        response_dict = request.json()
+
+        if request.status_code >= 300:
+            raise MessengerAPIError(response_dict)
+
+        return response_dict
+
+    @staticmethod
+    def _format_action_payload(recipient_id, sender_action):
+        return {
+            'recipient': {
+                'id': recipient_id,
+            },
+            'sender_action': sender_action,
+        }
+
+    @staticmethod
+    def _format_text_payload(recipient_id, text, notification_type):
+        return {
+            'recipient': {
+                'id': recipient_id,
+            },
+            'message': {
+                'text': text,
+            },
+            'notification_type': notification_type,
+        }
+
+    @staticmethod
+    def _format_attachment_payload(recipient_id, attachment, notification_type):
+        return {
+            'recipient': {
+                'id': recipient_id,
+            },
+            'message': {
+                'attachment': attachment,
+            },
+            'notification_type': notification_type,
+        }
+
+    @staticmethod
+    def _format_welcome_message(attachment):
+        return {
             'setting_type': 'call_to_actions',
             'thread_state': 'new_thread',
             'call_to_actions': [
-                message,
+                {
+                    'message': {
+                        attachment
+                    }
+                },
             ],
         }
 
-        request = requests.post(
-            url='https://graph.facebook.com/v2.6/{}/thread_settings?access_token={}'.format(page_id, self.access_token),
-            json=data,
-        )
 
-        return request.json()
+class Response(object):
+    def __init__(self, response_dict):
+        self.recipient_id = response_dict.get('recipient_id', '')
+        self.message_id = response_dict.get('message_id', '')
+
+    def __str__(self):
+        return self.message_id
+
+    def __unicode__(self):
+        return self.__str__()
