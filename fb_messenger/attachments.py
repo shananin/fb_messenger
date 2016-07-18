@@ -5,6 +5,16 @@ from .interfaces import IFBPayload, ISubItem
 from .exceptions import IncorrectType
 
 
+class Text(IFBPayload):
+    def __init__(self, text):
+        self.text = text
+
+    def to_dict(self):
+        return {
+            'text': self.text,
+        }
+
+
 class Image(IFBPayload):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/image-attachment
@@ -18,9 +28,11 @@ class Image(IFBPayload):
 
     def to_dict(self):
         return {
-            'type': 'image',
-            'payload': {
-                'url': self.image_url,
+            'attachment': {
+                'type': 'image',
+                'payload': {
+                    'url': self.image_url,
+                },
             },
         }
 
@@ -41,12 +53,14 @@ class Buttons(IFBPayload):
             button_dicts.append(button.to_dict())
 
         return {
-            'type': 'template',
-            'payload': {
-                'template_type': 'button',
-                'text': self.text,
-                'buttons': button_dicts
-            }
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'button',
+                    'text': self.text,
+                    'buttons': button_dicts
+                },
+            },
         }
 
 
@@ -137,10 +151,12 @@ class Generic(IFBPayload):
             element_dicts.append(element.to_dict())
 
         return {
-            'type': 'template',
-            'payload': {
-                'template_type': 'generic',
-                'elements': element_dicts,
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'generic',
+                    'elements': element_dicts,
+                },
             },
         }
 
@@ -173,15 +189,17 @@ class Receipt(IFBPayload):
             element_dicts.append(elem.to_dict())
 
         data = {
-            'type': 'template',
-            'payload': {
-                'template_type': 'receipt',
-                'recipient_name': self.recipient_name,
-                'order_number': self.order_number,
-                'currency': self.currency,
-                'payment_method': self.payment_method,
-                'elements': element_dicts,
-                'summary': self.summary.to_dict(),
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'receipt',
+                    'recipient_name': self.recipient_name,
+                    'order_number': self.order_number,
+                    'currency': self.currency,
+                    'payment_method': self.payment_method,
+                    'elements': element_dicts,
+                    'summary': self.summary.to_dict(),
+                },
             },
         }
 

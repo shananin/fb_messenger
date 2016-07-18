@@ -1,13 +1,13 @@
 from __future__ import unicode_literals
-from six import string_types
 import logging
 import requests
 from .types import action as action_types
 from .types import callback as callback_types
 from . import const
 from .types import notification as notification_types
-from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType
+from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType, InvalidBody
 from .interfaces import IFBPayload
+from .callbacks import parse_callback
 
 
 class FBMessenger(object):
@@ -46,9 +46,7 @@ class FBMessenger(object):
         if notification_type not in notification_types.ALL_NOTIFICATION_TYPES:
             raise UnknownNotificationType
 
-        if isinstance(attachment, string_types):
-            payload = self._format_text_payload(recipient_id, attachment, notification_type)
-        elif isinstance(attachment, IFBPayload):
+        if isinstance(attachment, IFBPayload):
             payload = self._format_attachment_payload(recipient_id, attachment.to_dict(), notification_type)
         else:
             raise TypeError
@@ -76,11 +74,20 @@ class FBMessenger(object):
 
     def process_message(self, body):
         self.logger.debug(body)
+        if 'entry' not in body:
+            raise InvalidBody
 
-        if 'received' in self._callbacks:
-            self._callbacks['received'](body)
+        for entry in body['entry']:
+            if 'messaging' not in entry:
+                continue
 
-    def callback(self, callback_name):
+            for messaging in entry['messaging']:
+                callback_type, args = parse_callback(messaging)
+
+                if callback_type in self._callbacks:
+                    self._callbacks[callback_type](**args)
+
+    def register_callback(self, callback_name):
         def decorator(function):
             if callback_name not in callback_types.ALL_CALLBACKS:
                 self.logger.warn('{} is not fb messenger callback'.format(callback_name))
@@ -126,26 +133,12 @@ class FBMessenger(object):
         }
 
     @staticmethod
-    def _format_text_payload(recipient_id, text, notification_type):
-        return {
-            'recipient': {
-                'id': recipient_id,
-            },
-            'message': {
-                'text': text,
-            },
-            'notification_type': notification_type,
-        }
-
-    @staticmethod
     def _format_attachment_payload(recipient_id, attachment, notification_type):
         return {
             'recipient': {
                 'id': recipient_id,
             },
-            'message': {
-                'attachment': attachment,
-            },
+            'message': attachment,
             'notification_type': notification_type,
         }
 

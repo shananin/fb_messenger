@@ -3,6 +3,13 @@ from __future__ import unicode_literals
 from six import string_types
 import json
 from .exceptions import RequestFailed, UnknownCallback
+from .types import callback as callback_types
+
+
+def parse_callback(payload):
+    callback = CallbacksFactory(payload)
+
+    return callback_types.MESSAGE_RECEIVED, {'callback': callback}
 
 
 class CallbacksParser(object):
