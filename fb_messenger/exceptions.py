@@ -22,6 +22,10 @@ class UnknownAction(MainException):
     pass
 
 
+class UnknownNotificationType(MainException):
+    pass
+
+
 class MessengerAPIError(MainException):
     def __init__(self, response_dict):
         if 'error' not in response_dict:

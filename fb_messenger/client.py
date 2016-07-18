@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
+from six import string_types
 import logging
 import requests
+from .types import action as action_types
+from .types import callback as callback_types
 from . import const
-from .exceptions import RequestFailed, UnknownAction, MessengerAPIError
-from . import notification_type as nt
-from . import callbacks
-from . import callback_types
-from . import action_types
+from .types import notification as notification_types
+from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType
+from .interfaces import IFBPayload
 
 
 class FBMessenger(object):
@@ -40,37 +41,18 @@ class FBMessenger(object):
         self._access_token = access_token
         self._api_url = const.API_FB_MESSAGES_URL + self._access_token
 
-    def send_attachment(self, recipient_id, attachment, notification_type=nt.REGULAR):
-        payload = self._format_attachment_payload(recipient_id, attachment, notification_type)
+    def send_attachment(self, recipient_id, attachment, notification_type=notification_types.REGULAR):
+        if notification_type not in notification_types.ALL_NOTIFICATION_TYPES:
+            raise UnknownNotificationType
 
-        self.logger.debug(payload)
+        if isinstance(attachment, string_types):
+            payload = self._format_text_payload(recipient_id, attachment, notification_type)
+        elif isinstance(attachment, IFBPayload):
+            payload = self._format_attachment_payload(recipient_id, attachment, notification_type)
+        else:
+            raise TypeError
 
-        request = requests.post(
-            url='{}?access_token={}'.format(const.API_FB_MESSAGES_URL, self._access_token),
-            json=payload,
-        )
-
-        if request.status_code >= 300:
-            self.logger.warn(request.text)
-            raise RequestFailed(request.text)
-
-        return Response(response=request.json())
-
-    def send_text(self, recipient_id, text, notification_type=nt.REGULAR):
-        payload = self._format_text_payload(recipient_id, text, notification_type)
-
-        self.logger.debug(payload)
-
-        request = requests.post(
-            url=const.API_FB_MESSAGES_URL + self._access_token,
-            json=payload,
-        )
-
-        if request.status_code >= 300:
-            self.logger.warn(request.text)
-            raise RequestFailed(request.text)
-
-        return Response(response=request.json())
+        return Response(self._send_request(payload))
 
     def send_action(self, recipient_id, sender_action):
         """
