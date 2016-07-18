@@ -1,7 +1,7 @@
 .env
 ### Pycharm
 .idea
-
+examples/const.py
 ### OSX template
 *.DS_Store
 .AppleDouble

@@ -32,8 +32,9 @@ class FBMessenger(object):
         if logger is not None:
             self.logger = logger
         else:
-            # TODO: rewrite
+            logging.basicConfig()
             self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.WARNING)
 
         if logger_level is not None:
             self.logger.setLevel(logger_level)
@@ -48,7 +49,7 @@ class FBMessenger(object):
         if isinstance(attachment, string_types):
             payload = self._format_text_payload(recipient_id, attachment, notification_type)
         elif isinstance(attachment, IFBPayload):
-            payload = self._format_attachment_payload(recipient_id, attachment, notification_type)
+            payload = self._format_attachment_payload(recipient_id, attachment.to_dict(), notification_type)
         else:
             raise TypeError
 
@@ -167,9 +168,10 @@ class Response(object):
     def __init__(self, response_dict):
         self.recipient_id = response_dict.get('recipient_id', '')
         self.message_id = response_dict.get('message_id', '')
+        self.response_dict = response_dict
 
     def __str__(self):
-        return self.message_id
+        return str(self.response_dict)
 
     def __unicode__(self):
         return self.__str__()
