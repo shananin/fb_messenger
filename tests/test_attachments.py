@@ -1,15 +1,25 @@
 from __future__ import unicode_literals
-from fb_messenger import attachments
+from fb_messenger.fb_messenger import attachments
+
+
+def test_text():
+    text = 'test text'
+
+    assert attachments.Text(text=text).to_dict() == {
+        'text': text,
+    }
 
 
 def test_image():
     img_url = 'http://example.com/img.jpg'
 
     assert attachments.Image(img_url).to_dict() == {
-        'type': 'image',
-        'payload': {
-            'url': img_url,
-        },
+        'attachment': {
+            'type': 'image',
+            'payload': {
+                'url': img_url,
+            },
+        }
     }
 
 
@@ -49,4 +59,22 @@ def test_generic_element():
     assert attachments.GenericElement(title, item_url=item_url).to_dict() == {
         'title': title,
         'item_url': item_url,
+    }
+
+    assert attachments.GenericElement(title=title, item_url=item_url, image_url=image_url).to_dict() == {
+        'title': title,
+        'item_url': item_url,
+        'image_url': image_url,
+    }
+
+    assert attachments.GenericElement(
+        title=title,
+        item_url=item_url,
+        image_url=image_url,
+        subtitle=subtitle,
+    ).to_dict() == {
+        'title': title,
+        'item_url': item_url,
+        'image_url': image_url,
+        'subtitle': subtitle,
     }
