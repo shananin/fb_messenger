@@ -1,3 +1,7 @@
+"""
+Exception collection
+"""
+# pylint: disable=super-init-not-called
 class MainException(Exception):
     pass
 

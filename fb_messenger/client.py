@@ -1,3 +1,18 @@
+"""
+client = FBMessenger(access_token='ADSD...')
+
+    try:
+        response = client.send_text('1231313', 'text')
+    except MainException as e:
+        logging.debug(e)
+
+    attachment = attachments.Image(img_url='http://example.com/img.jpg')
+    try:
+        response = client.send_attachment('1231313', attachment)
+    except MainException as e:
+        logging.debug(e)
+
+"""
 from __future__ import unicode_literals
 import logging
 import requests
@@ -13,20 +28,6 @@ from .callbacks import parse_callback
 
 
 class FBMessenger(object):
-    """
-    client = FBMessenger(access_token='ADSD...')
-
-    try:
-        response = client.send_text('1231313', 'text')
-    except MainException as e:
-        logging.debug(e)
-
-    attachment = attachments.Image(img_url='http://example.com/img.jpg')
-    try:
-        response = client.send_attachment('1231313', attachment)
-    except MainException as e:
-        logging.debug(e)
-    """
 
     _callbacks = {}
 

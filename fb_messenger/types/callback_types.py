@@ -1,3 +1,7 @@
+"""
+All callback types
+:see https://developers.facebook.com/docs/messenger-platform/webhook-reference
+"""
 from __future__ import unicode_literals
 
 MESSAGE_RECEIVED = 'message_received'

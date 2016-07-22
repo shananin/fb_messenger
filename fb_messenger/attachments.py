@@ -1,4 +1,7 @@
-# pylint: disable=R0903
+"""
+Attachments collection
+:see https://developers.facebook.com/docs/messenger-platform/send-api-reference
+"""
 from __future__ import unicode_literals
 from six import string_types
 from .interfaces import IFBPayload, IButton, IGenericItem
@@ -7,7 +10,7 @@ from .exceptions import IncorrectType
 
 class Text(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
     """
 
     def __init__(self, text):
@@ -21,7 +24,7 @@ class Text(IFBPayload):
 
 class Image(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/image-attachment
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/image-attachment
     """
 
     def __init__(self, image_url):
@@ -43,7 +46,7 @@ class Image(IFBPayload):
 
 class Buttons(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
     _buttons = []
 
@@ -85,7 +88,7 @@ class Buttons(IFBPayload):
 
 class ButtonWithWebUrl(IButton):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
 
     def __init__(self, title, web_url):
@@ -102,7 +105,7 @@ class ButtonWithWebUrl(IButton):
 
 class ButtonWithPostback(IButton):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
 
     def __init__(self, title, payload):
@@ -119,10 +122,9 @@ class ButtonWithPostback(IButton):
 
 class GenericItem(IGenericItem):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """
 
-    # pylint: disable=R0913
     def __init__(self, title, item_url=None, image_url=None, subtitle=None, buttons=None):
         self.title = title
         self.item_url = item_url
@@ -157,7 +159,7 @@ class GenericItem(IGenericItem):
 
 class Generic(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """
 
     def __init__(self, elements):
@@ -183,11 +185,9 @@ class Generic(IFBPayload):
 class Receipt(IFBPayload):
     """
     TODO: complete receipt attachment
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
-    # pylint: disable=R0913
-    # pylint: disable=R0902
     def __init__(self, recipient_name, order_number, currency, payment_method, elements, summary,
                  timestamp=None, order_url=None, address=None, adjustments=None):
         self.recipient_name = recipient_name
@@ -244,7 +244,7 @@ class Receipt(IFBPayload):
 
 class Summary(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
     def __init__(self, total_cost, subtotal=None, shipping_cost=None, total_tax=None):
@@ -272,10 +272,9 @@ class Summary(IFBPayload):
 
 class ReceiptElement(IFBPayload):
     """
-    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
-    # pylint: disable=R0913
     def __init__(self, title, subtitle=None, quantity=None,
                  price=None, currency=None, image_url=None):
         self.title = title

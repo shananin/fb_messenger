@@ -1,3 +1,7 @@
+"""
+All types of notification
+:see Payload -> notification_type https://developers.facebook.com/docs/messenger-platform/send-api-reference
+"""
 from __future__ import unicode_literals
 
 REGULAR = 'REGULAR'

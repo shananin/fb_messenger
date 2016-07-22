@@ -1,7 +1,9 @@
-# pylint: disable=R0903
+"""
+Callbacks parser
+"""
 from __future__ import unicode_literals
-from six import string_types
 import json
+from six import string_types
 from .exceptions import RequestFailed, UnknownCallback
 from .types import callback_types
 
