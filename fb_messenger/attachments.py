@@ -1,7 +1,7 @@
 # pylint: disable=R0903
 from __future__ import unicode_literals
 from six import string_types
-from .interfaces import IFBPayload, ISubItem
+from .interfaces import IFBPayload, IButton, IGenericItem
 from .exceptions import IncorrectType
 
 
@@ -9,7 +9,7 @@ class Text(IFBPayload):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
     """
-    
+
     def __init__(self, text):
         self.text = text
 
@@ -45,16 +45,31 @@ class Buttons(IFBPayload):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
+    _buttons = []
 
     def __init__(self, text, buttons):
         self.text = text
-        self.buttons = buttons
+
+        for button in buttons:
+            if not isinstance(button, IButton):
+                raise TypeError('You should use only IButton instances')
+
+        self._buttons.append(buttons)
+
+    def add_button(self, button):
+        if not isinstance(button, IButton):
+            raise TypeError('You should use only IButton instances')
+
+        self._buttons.append(button)
+
+    def remove_buttons(self):
+        self._buttons = []
 
     def to_dict(self):
-        button_dicts = []
+        buttons_dict = []
 
-        for button in self.buttons:
-            button_dicts.append(button.to_dict())
+        for button in self._buttons:
+            buttons_dict.append(button.to_dict())
 
         return {
             'attachment': {
@@ -62,13 +77,13 @@ class Buttons(IFBPayload):
                 'payload': {
                     'template_type': 'button',
                     'text': self.text,
-                    'buttons': button_dicts
+                    'buttons': buttons_dict
                 },
             },
         }
 
 
-class ButtonWithWebUrl(ISubItem):
+class ButtonWithWebUrl(IButton):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
@@ -85,7 +100,7 @@ class ButtonWithWebUrl(ISubItem):
         }
 
 
-class ButtonWithPostback(ISubItem):
+class ButtonWithPostback(IButton):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
@@ -102,7 +117,7 @@ class ButtonWithPostback(ISubItem):
         }
 
 
-class GenericElement(ISubItem):
+class GenericItem(IGenericItem):
     """
     @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """

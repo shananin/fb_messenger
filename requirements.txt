@@ -5,8 +5,12 @@ colorama==0.3.7
 coverage==4.1
 coveralls==1.1
 docopt==0.6.2
+-e git+git@github.com:shananin/fb_messanger.git@dd8acb091114d0f14ebc1e2b4a3bc3be6f487c6d#egg=fb_messenger&subdirectory=../../fb_messenger
+funcsigs==1.0.2
 lazy-object-proxy==1.2.2
+mock==2.0.0
 ordereddict==1.1
+pbr==1.10.0
 pluggy==0.3.1
 py==1.4.31
 pylint==1.5.6

@@ -52,22 +52,22 @@ def test_generic_element():
     subtitle = 'subtitle'
     buttons = None
 
-    assert attachments.GenericElement(title).to_dict() == {
+    assert attachments.GenericItem(title).to_dict() == {
         'title': title
     }
 
-    assert attachments.GenericElement(title, item_url=item_url).to_dict() == {
+    assert attachments.GenericItem(title, item_url=item_url).to_dict() == {
         'title': title,
         'item_url': item_url,
     }
 
-    assert attachments.GenericElement(title=title, item_url=item_url, image_url=image_url).to_dict() == {
+    assert attachments.GenericItem(title=title, item_url=item_url, image_url=image_url).to_dict() == {
         'title': title,
         'item_url': item_url,
         'image_url': image_url,
     }
 
-    assert attachments.GenericElement(
+    assert attachments.GenericItem(
         title=title,
         item_url=item_url,
         image_url=image_url,

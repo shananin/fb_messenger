@@ -170,3 +170,6 @@ class Response(object):
 
     def __unicode__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        return self.response_dict == other.response_dict

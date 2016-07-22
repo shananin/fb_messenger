@@ -6,6 +6,11 @@ class IFBPayload(object):
         raise NotImplementedError('Should have implemented to_dict method')
 
 
-class ISubItem(object):
+class IButton(object):
+    def to_dict(self):
+        raise NotImplementedError('Should have implemented to_dict method')
+
+
+class IGenericItem(object):
     def to_dict(self):
         raise NotImplementedError('Should have implemented to_dict method')

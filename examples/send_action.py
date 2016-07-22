@@ -1,6 +1,6 @@
 import logger
 import logging
-from fb_messenger.types import action as action_types
+from fb_messenger.types import action_types
 from fb_messenger.client import FBMessenger
 from const import ACCESS_TOKEN, RECIPIENT_ID
 
