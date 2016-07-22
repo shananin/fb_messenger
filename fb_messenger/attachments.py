@@ -6,6 +6,10 @@ from .exceptions import IncorrectType
 
 
 class Text(IFBPayload):
+    """
+    @see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
+    """
+    
     def __init__(self, text):
         self.text = text
 

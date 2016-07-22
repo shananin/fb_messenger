@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 import logging
 import requests
-from .types import action as action_types
-from .types import callback as callback_types
+from .types import (
+    action_types,
+    callback_types,
+    notification_types,
+)
 from . import const
-from .types import notification as notification_types
 from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType, InvalidBody
 from .interfaces import IFBPayload
 from .callbacks import parse_callback
