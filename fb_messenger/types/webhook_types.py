@@ -1,5 +1,5 @@
 """
-All callback types
+All webhook types
 :see https://developers.facebook.com/docs/messenger-platform/webhook-reference
 """
 from __future__ import unicode_literals
@@ -12,7 +12,7 @@ MESSAGE_DELIVERED = 'message_delivered'
 MESSAGE_READ = 'message_read'
 MESSAGE_ECHO = 'message_echo'
 
-ALL_CALLBACKS = (
+ALL_WEBHOOKS = (
     MESSAGE_RECEIVED,
     POSTBACK_RECEIVED,
     AUTHENTICATION,

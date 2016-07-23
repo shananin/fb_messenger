@@ -18,18 +18,17 @@ import logging
 import requests
 from .types import (
     action_types,
-    callback_types,
+    webhook_types,
     notification_types,
 )
 from . import const
 from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType, InvalidBody
 from .interfaces import IFBPayload
-from .callbacks import parse_callback
+from .webhooks import parse_payload
 
 
 class FBMessenger(object):
-
-    _callbacks = {}
+    _webhooks = {}
 
     def __init__(self, access_token, logger=None, logger_level=None):
         if logger is not None:
@@ -50,7 +49,7 @@ class FBMessenger(object):
             raise UnknownNotificationType
 
         if isinstance(attachment, IFBPayload):
-            payload = self._format_attachment_payload(recipient_id, attachment.to_dict(), notification_type)
+            payload = _format_attachment_payload(recipient_id, attachment.to_dict(), notification_type)
         else:
             raise TypeError
 
@@ -70,7 +69,7 @@ class FBMessenger(object):
             raise UnknownAction
 
         response_dict = self._send_request(
-            self._format_action_payload(recipient_id, sender_action)
+            _format_action_payload(recipient_id, sender_action)
         )
 
         return Response(response_dict)
@@ -85,25 +84,28 @@ class FBMessenger(object):
                 continue
 
             for messaging in entry['messaging']:
-                callback_type, args = parse_callback(messaging)
+                webhook = parse_payload(messaging)
 
-                if callback_type in self._callbacks:
-                    self._callbacks[callback_type](**args)
+                if not webhook:
+                    continue
 
-    def register_callback(self, callback_name):
+                if webhook.type in self._webhooks:
+                    self._webhooks[webhook.type](webhook)
+
+    def register_webhook(self, callback_name):
         def decorator(function):
-            if callback_name not in callback_types.ALL_CALLBACKS:
+            if callback_name not in webhook_types.ALL_WEBHOOKS:
                 self.logger.warn('{} is not fb messenger callback'.format(callback_name))
                 return function
 
             self.logger.info('{} callback has been added'.format(callback_name))
-            self._callbacks[callback_name] = function
+            self._webhooks[callback_name] = function
             return function
 
         return decorator
 
     def create_welcome_message(self, page_id, message):
-        payload = self._format_welcome_message(message)
+        payload = _format_welcome_message(message)
 
         request = requests.post(
             url='https://graph.facebook.com/v2.6/{}/thread_settings?access_token={}'.format(page_id,
@@ -126,39 +128,6 @@ class FBMessenger(object):
 
         return response_dict
 
-    @staticmethod
-    def _format_action_payload(recipient_id, sender_action):
-        return {
-            'recipient': {
-                'id': recipient_id,
-            },
-            'sender_action': sender_action,
-        }
-
-    @staticmethod
-    def _format_attachment_payload(recipient_id, attachment, notification_type):
-        return {
-            'recipient': {
-                'id': recipient_id,
-            },
-            'message': attachment,
-            'notification_type': notification_type,
-        }
-
-    @staticmethod
-    def _format_welcome_message(attachment):
-        return {
-            'setting_type': 'call_to_actions',
-            'thread_state': 'new_thread',
-            'call_to_actions': [
-                {
-                    'message': {
-                        attachment
-                    }
-                },
-            ],
-        }
-
 
 class Response(object):
     def __init__(self, response_dict):
@@ -174,3 +143,36 @@ class Response(object):
 
     def __eq__(self, other):
         return self.response_dict == other.response_dict
+
+
+def _format_action_payload(recipient_id, sender_action):
+    return {
+        'recipient': {
+            'id': recipient_id,
+        },
+        'sender_action': sender_action,
+    }
+
+
+def _format_attachment_payload(recipient_id, attachment, notification_type):
+    return {
+        'recipient': {
+            'id': recipient_id,
+        },
+        'message': attachment,
+        'notification_type': notification_type,
+    }
+
+
+def _format_welcome_message(attachment):
+    return {
+        'setting_type': 'call_to_actions',
+        'thread_state': 'new_thread',
+        'call_to_actions': [
+            {
+                'message': {
+                    attachment
+                }
+            },
+        ],
+    }

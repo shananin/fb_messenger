@@ -5,7 +5,7 @@ colorama==0.3.7
 coverage==4.1
 coveralls==1.1
 docopt==0.6.2
--e git+git@github.com:shananin/fb_messanger.git@dd8acb091114d0f14ebc1e2b4a3bc3be6f487c6d#egg=fb_messenger&subdirectory=../../fb_messenger
+-e git+git@github.com:shananin/fb_messanger.git@081b93bcf4f7040609e8958200c083b4fd0c8df4#egg=fb_messenger&subdirectory=../../fb_messenger
 funcsigs==1.0.2
 lazy-object-proxy==1.2.2
 mock==2.0.0
@@ -18,6 +18,7 @@ pytest==2.9.2
 pytest-cov==2.3.0
 python-dotenv==0.5.1
 requests==2.10.0
+requests-mock==1.0.0
 six==1.10.0
 virtualenv==15.0.2
 wrapt==1.10.8
