@@ -5,7 +5,6 @@ colorama==0.3.7
 coverage==4.1
 coveralls==1.1
 docopt==0.6.2
--e git+git@github.com:shananin/fb_messanger.git@081b93bcf4f7040609e8958200c083b4fd0c8df4#egg=fb_messenger&subdirectory=../../fb_messenger
 funcsigs==1.0.2
 lazy-object-proxy==1.2.2
 mock==2.0.0
