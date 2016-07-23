@@ -8,7 +8,7 @@ from fb_messenger.fb_messenger import exceptions
 from . import data
 
 
-@requests_mock.mock()
+@requests_mock.Mocker()
 def test_send_action(m):
     client = FBMessenger(access_token='test')
 
@@ -22,7 +22,7 @@ def test_send_action(m):
         client.send_action('111', 'test')
 
 
-@requests_mock.mock()
+@requests_mock.Mocker()
 def test_failed_send_action(m):
     client = FBMessenger(access_token='test')
 
