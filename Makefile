@@ -10,7 +10,7 @@ lint:
 
 test:
 	. venv/bin/activate && \
-	py.test -v --cov=fb_messenger tests/
+	py.test -v --cov=fb_messenger --cov coveralls --cov-report term-missing tests/
 
 clean:
 	rm -rf venv
