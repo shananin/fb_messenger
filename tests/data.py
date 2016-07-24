@@ -141,4 +141,9 @@ message_read_webhook = {
     }
 }
 
+message_hello_full_webhook = {'entry': [{'messaging': [
+    {'recipient': {'id': '1579236102311111'}, 'sender': {'id': '1447507518611111'},
+     'message': {'mid': 'mid.1469347911111:4128b8d2be11115554', 'text': 'hello', 'seq': 56},
+     'timestamp': 1469347944638}], 'time': 1469347944663, 'id': '1579236102311112'}], 'object': 'page'}
+
 # TODO: Message echo

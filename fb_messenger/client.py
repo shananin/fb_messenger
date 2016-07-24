@@ -92,14 +92,14 @@ class FBMessenger(object):
                 if webhook.type in self._webhooks:
                     self._webhooks[webhook.type](webhook)
 
-    def register_webhook(self, callback_name):
+    def register_webhook(self, webhook_type):
         def decorator(function):
-            if callback_name not in webhook_types.ALL_WEBHOOKS:
-                self.logger.warn('{} is not fb messenger callback'.format(callback_name))
+            if webhook_type not in webhook_types.ALL_WEBHOOKS:
+                self.logger.warn('{} is not fb messenger callback'.format(webhook_type))
                 return function
 
-            self.logger.info('{} callback has been added'.format(callback_name))
-            self._webhooks[callback_name] = function
+            self.logger.info('{} callback has been added'.format(webhook_type))
+            self._webhooks[webhook_type] = function
             return function
 
         return decorator
