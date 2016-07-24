@@ -131,8 +131,8 @@ class FBMessenger(object):
 
 class Response(object):
     def __init__(self, response_dict):
-        self.recipient_id = response_dict.get('recipient_id', '')
-        self.message_id = response_dict.get('message_id', '')
+        self.recipient_id = response_dict.get('recipient_id')
+        self.message_id = response_dict.get('message_id')
         self.response_dict = response_dict
 
     def __str__(self):

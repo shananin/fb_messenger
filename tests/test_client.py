@@ -76,6 +76,16 @@ def test_format_attachment_payload():
            }
 
 
+def test_response():
+    response_action = Response(data.response_action_send)
+    assert response_action.recipient_id == data.response_action_send['recipient_id']
+    assert response_action.message_id is None
+
+    response_message = Response(data.response_message_send)
+    assert response_message.recipient_id == data.response_message_send['recipient_id']
+    assert response_message.message_id == data.response_message_send['message_id']
+
+
 def test_process_hello():
     client = FBMessenger(access_token='test')
 
@@ -83,8 +93,8 @@ def test_process_hello():
     def process_received(webhook):
         assert webhook.payload == {
             'message': {'mid': 'mid.1469347911111:4128b8d2be11115554',
-                         'seq': 56,
-                         'text': 'hello'},
+                        'seq': 56,
+                        'text': 'hello'},
             'recipient': {'id': '1579236102311111'},
             'sender': {'id': '1447507518611111'},
             'timestamp': 1469347944638}

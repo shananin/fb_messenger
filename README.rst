@@ -1,4 +1,4 @@
-Python API client for FB Messenger (be under development)
+Python API client for FB Messenger (under development)
 =========================================================
 
 .. image:: https://travis-ci.org/shananin/fb_messenger.svg?branch=master
