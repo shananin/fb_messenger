@@ -2,7 +2,6 @@
 Callbacks parser
 """
 from __future__ import unicode_literals
-from .exceptions import RequestFailed
 from .types import webhook_types
 
 
@@ -26,9 +25,6 @@ def parse_payload(payload):
 
 class Webhook(object):
     def __init__(self, payload):
-        if ('sender' or 'recipient') not in payload:
-            raise RequestFailed
-
         self.user_id = self.sender_id = payload['sender'].get('id')
         self.page_id = self.recipient_id = payload['recipient'].get('id')
         self.timestamp = payload.get('timestamp')
