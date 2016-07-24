@@ -20,9 +20,9 @@ def test_message_delivered_webhook():
 
     assert message_delivered.recipient_id == payload['recipient']['id']
     assert message_delivered.sender_id == payload['sender']['id']
-    assert message_delivered.delivery_mids == payload['delivery']['mids']
-    assert message_delivered.delivery_seq == payload['delivery']['seq']
-    assert message_delivered.delivery_watermark == payload['delivery']['watermark']
+    assert message_delivered.mids == payload['delivery']['mids']
+    assert message_delivered.seq == payload['delivery']['seq']
+    assert message_delivered.watermark == payload['delivery']['watermark']
     assert message_delivered.payload == payload
 
 
@@ -33,8 +33,8 @@ def test_message_read_webhook():
     assert message_read.recipient_id == payload['recipient']['id']
     assert message_read.sender_id == payload['sender']['id']
     assert message_read.timestamp == payload['timestamp']
-    assert message_read.read_watermark == payload['read']['watermark']
-    assert message_read.read_seq == payload['read']['seq']
+    assert message_read.watermark == payload['read']['watermark']
+    assert message_read.seq == payload['read']['seq']
     assert message_read.payload == payload
 
 
@@ -56,8 +56,8 @@ def test_account_linking_webhook():
     assert account_linking_linked.recipient_id == payload['recipient']['id']
     assert account_linking_linked.sender_id == payload['sender']['id']
     assert account_linking_linked.timestamp == payload['timestamp']
-    assert account_linking_linked.account_linking_status == payload['account_linking']['status']
-    assert account_linking_linked.account_linking_authorization_code == payload['account_linking']['authorization_code']
+    assert account_linking_linked.status == payload['account_linking']['status']
+    assert account_linking_linked.authorization_code == payload['account_linking']['authorization_code']
     assert account_linking_linked.payload == payload
 
     payload = data.account_linking_unlinked_webhook
@@ -66,8 +66,8 @@ def test_account_linking_webhook():
     assert account_linking_unlinked.recipient_id == payload['recipient']['id']
     assert account_linking_unlinked.sender_id == payload['sender']['id']
     assert account_linking_unlinked.timestamp == payload['timestamp']
-    assert account_linking_unlinked.account_linking_status == payload['account_linking']['status']
-    assert account_linking_unlinked.account_linking_authorization_code is None
+    assert account_linking_unlinked.status == payload['account_linking']['status']
+    assert account_linking_unlinked.authorization_code is None
     assert account_linking_unlinked.payload == payload
 
 
