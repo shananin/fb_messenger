@@ -31,6 +31,16 @@ _________________
     cd fb_messenger
     python setup.py install
 
+How to develop
+______________
+
+.. code-block:: sh
+
+    make install # create virtualenv folder and install requirements
+    make lint # run pylint
+    make test # run tests
+    make clean # remove virtualenv folder
+
 
 How to Use
 ~~~~~~~~~~

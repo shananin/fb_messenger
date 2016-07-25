@@ -2,6 +2,7 @@ install:
 	virtualenv venv && \
 	. venv/bin/activate && \
 	pip install --upgrade pip && \
+	pip install -r dev-requirements.txt && \
 	pip install -r requirements.txt
 
 lint:
@@ -14,8 +15,3 @@ test:
 
 clean:
 	rm -rf venv
-
-virtualenv:
-	virtualenv venv && \
-	pip install --upgrade pip && \
-	pip install -r requirements.txt

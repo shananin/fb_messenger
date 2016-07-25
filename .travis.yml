@@ -1,13 +1,15 @@
 language: python
 python:
   - "2.7"
+  - "3.3"
+  - "3.4"
   - "3.5"
-#  - "pypy"
+  - "pypy"
 # command to install dependencies
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
-  - pip install coveralls
+  - pip install -r dev-requirements.txt
 script:
   - pylint -E fb_messenger
   - py.test -v --cov=fb_messenger --cov coveralls --cov-report term-missing tests/

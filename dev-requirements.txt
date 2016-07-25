@@ -1,0 +1,14 @@
+astroid==1.4.7
+backports.functools-lru-cache==1.2.1
+configparser==3.5.0
+coverage==4.1
+coveralls==1.1
+docopt==0.6.2
+isort==4.2.5
+lazy-object-proxy==1.2.2
+mccabe==0.5.0
+py==1.4.31
+pylint==1.6.4
+pytest==2.9.2
+pytest-cov==2.3.0
+requests-mock==1.0.0
