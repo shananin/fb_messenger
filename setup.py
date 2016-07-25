@@ -51,7 +51,7 @@ if __name__ == "__main__":
         keywords="fb facebook messenger client api chat",
         license="MIT",
         name="fb_messenger",
-        packages=["fb_messenger"],
+        packages=["fb_messenger", "fb_messenger.types"],
         url="https://github.com/shananin/Fb_messanger",
         version='0.1',
         maintainer='Artem Shananin (Shananin)',
