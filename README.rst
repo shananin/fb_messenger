@@ -2,9 +2,11 @@ Python API client for FB Messenger (under development)
 ======================================================
 
 .. image:: https://travis-ci.org/shananin/fb_messenger.svg?branch=master
-:target: https://travis-ci.org/shananin/fb_messenger
+    :target: https://travis-ci.org/shananin/fb_messenger
+
 .. image:: https://coveralls.io/repos/github/shananin/fb_messenger/badge.svg?branch=master
-:target: https://coveralls.io/github/shananin/fb_messenger?branch=master
+    :target: https://coveralls.io/github/shananin/fb_messenger?branch=master
+
 Installation
 ~~~~~~~~~~~~
 
@@ -46,10 +48,10 @@ How to Use
 ~~~~~~~~~~
 
 Send simple text
-----------------
-
+________________
 
 .. code-block:: python
+
     from fb_messenger.client import FBMessenger
     from fb_messenger import attachments
     from fb.messenger.exceptions import MessengerAPIError
@@ -70,6 +72,7 @@ More examples look into `examples` folder.
 
 
 .. code-block:: python
+
     image = attachments.Image('http://example.com/img.jpg')
 
     try:
@@ -81,8 +84,8 @@ More examples look into `examples` folder.
 Send action
 ___________
 
-
 .. code-block:: python
+
     from fb_messenger.types import action_types
 
     try:
@@ -95,7 +98,6 @@ How to process messages in Flask
 ________________________________
 
 .. code-block:: python
-
 
     from flask import Flask, request
     import logging
