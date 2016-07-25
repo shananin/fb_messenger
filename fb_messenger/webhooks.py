@@ -37,6 +37,9 @@ class Webhook(object):
     def __unicode__(self):
         return self.__str__()
 
+    def __repr__(self):
+        return str(self.__dict__)
+
 
 class Authentication(Webhook):
     """

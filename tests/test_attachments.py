@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from fb_messenger.fb_messenger import attachments
+from fb_messenger import attachments
 
 
 def test_text():

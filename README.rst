@@ -2,9 +2,9 @@ Python API client for FB Messenger (under development)
 ======================================================
 
 .. image:: https://travis-ci.org/shananin/fb_messenger.svg?branch=master
-    :target: https://travis-ci.org/shananin/fb_messenger
+:target: https://travis-ci.org/shananin/fb_messenger
 .. image:: https://coveralls.io/repos/github/shananin/fb_messenger/badge.svg?branch=master
-    :target: https://coveralls.io/github/shananin/fb_messenger?branch=master
+:target: https://coveralls.io/github/shananin/fb_messenger?branch=master
 Installation
 ~~~~~~~~~~~~
 
@@ -33,10 +33,59 @@ _________________
 
 
 How to Use
-__________
+~~~~~~~~~~
+
+Send simple text
+----------------
 
 
-.. code-block:: sh
+.. code-block:: python
+    from fb_messenger.client import FBMessenger
+    from fb_messenger import attachments
+    from fb.messenger.exceptions import MessengerAPIError
+
+    client = FBMessenger(ACCESS_TOKEN, logger_level=logging.DEBUG)
+    text = attachments.Text('hello!')
+
+    try:
+        response = client.send_attachment(RECIPIENT_ID, text)
+    except MessengerAPIError as e:
+        LOGGER.debug(e)
+
+
+Send attachment
+_______________
+
+More examples look into `examples` folder.
+
+
+.. code-block:: python
+    image = attachments.Image('http://example.com/img.jpg')
+
+    try:
+        response = client.send_attachment(RECIPIENT_ID, text)
+    except MessengerAPIError as e:
+        LOGGER.debug(e)
+
+
+Send action
+___________
+
+
+.. code-block:: python
+    from fb_messenger.types import action_types
+
+    try:
+        response = client.send_action(RECIPIENT_ID, action_types.MARK_SEEN)
+    except MessengerAPIError as e:
+        LOGGER.debug(e)
+
+
+How to process messages in Flask
+________________________________
+
+.. code-block:: python
+
 
     from flask import Flask, request
     import logging
@@ -44,60 +93,80 @@ __________
     from fb_messenger.types import webhook_types
 
     app = Flask(__name__)
+
+    logging.basicConfig()
+    LOGGER = logging.getLogger(__name__)
+    LOGGER.setLevel(logging.DEBUG)
+
     client = FBMessenger(ACCESS_TOKEN, logger_level=logging.DEBUG)
 
 
     @app.route('/webhook', methods=['GET'])
-    def get():
-        logging.debug(request.args)
+    def get_webhook():
         if request.args.get('hub.verify_token', '') == VERIFY_TOKEN:
-            logging.debug(request.args.get('hub.challenge', ''))
             return request.args.get('hub.challenge', '')
 
         return 'Error', 400
 
 
     @app.route('/webhook', methods=['POST'])
-    def post():
+    def post_webhook():
         try:
             client.process_message(request.get_json())
         except Exception as e:
-            logging.debug(e)
+            LOGGER.debug(e)
 
         return 'ok'
 
 
     @client.register_webhook(webhook_types.MESSAGE_RECEIVED)
     def message_received(webhook):
-        logging.debug((webhook_types.MESSAGE_RECEIVED, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.MessageReceived
+        """
+        LOGGER.debug((webhook_types.MESSAGE_RECEIVED, webhook))
 
 
     @client.register_webhook(webhook_types.POSTBACK_RECEIVED)
     def postback_received(webhook):
-        logging.debug((webhook_types.POSTBACK_RECEIVED, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.Postback
+        """
+        LOGGER.debug((webhook_types.POSTBACK_RECEIVED, webhook))
 
 
     @client.register_webhook(webhook_types.AUTHENTICATION)
     def authentication(webhook):
-        logging.debug((webhook_types.AUTHENTICATION, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.Authentication
+        """
+        LOGGER.debug((webhook_types.AUTHENTICATION, webhook))
 
 
     @client.register_webhook(webhook_types.ACCOUNT_LINKING)
     def account_linking(webhook):
-        logging.debug((webhook_types.ACCOUNT_LINKING, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.AccountLinking
+        """
+        LOGGER.debug((webhook_types.ACCOUNT_LINKING, webhook))
 
 
     @client.register_webhook(webhook_types.MESSAGE_DELIVERED)
     def message_delivered(webhook):
-        logging.debug((webhook_types.MESSAGE_DELIVERED, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.MessageDelivered
+        """
+        LOGGER.debug((webhook_types.MESSAGE_DELIVERED, webhook))
 
 
     @client.register_webhook(webhook_types.MESSAGE_READ)
     def message_read(webhook):
-        logging.debug((webhook_types.MESSAGE_READ, webhook))
+        """
+        :type webhook: fb_messenger.webhooks.MessageRead
+        """
+        LOGGER.debug((webhook_types.MESSAGE_READ, webhook))
 
 
-    @client.register_webhook(webhook_types.MESSAGE_ECHO)
-    def message_echo(webhook):
-        logging.debug((webhook_types.MESSAGE_ECHO, webhook))
+    if __name__ == '__main__':
+        app.run(debug=True, host='0.0.0.0')
 

@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from . import data
-from fb_messenger.fb_messenger import webhooks
+from fb_messenger import webhooks
 
 
 def test_authentication_webhook():

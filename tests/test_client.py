@@ -2,15 +2,19 @@ from __future__ import unicode_literals
 import json
 import pytest
 import requests_mock
-from fb_messenger.fb_messenger.client import (
+from fb_messenger.client import (
     FBMessenger,
     Response,
     _format_action_payload,
     _format_attachment_payload,
 )
-from fb_messenger.fb_messenger.types import action_types, notification_types, webhook_types
-from fb_messenger.fb_messenger import exceptions
-from fb_messenger.fb_messenger import attachments
+from fb_messenger.types import (
+    action_types,
+    notification_types,
+    webhook_types,
+)
+from fb_messenger import exceptions
+from fb_messenger import attachments
 from . import data
 
 
