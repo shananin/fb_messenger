@@ -55,7 +55,7 @@ if __name__ == "__main__":
         name="fb_messenger",
         packages=["fb_messenger", "fb_messenger.types"],
         url="https://github.com/shananin/Fb_messanger",
-        version='0.2.0',
+        version='0.2.1',
         maintainer='Artem Shananin (Shananin)',
         maintainer_email='artem.shananin@gmail.com',
     )
