@@ -15,3 +15,6 @@ test:
 
 clean:
 	rm -rf venv
+
+upload:
+	python setup.py sdist upload -r pypi

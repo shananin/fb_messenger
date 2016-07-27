@@ -41,8 +41,8 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.3',
             'Programming Language :: Python :: 3.4',
             'Programming Language :: Python :: 3.5',
+            'Programming Language :: Python :: PyPy',
             'Programming Language :: Python :: Implementation :: CPython',
-            'Programming Language :: Python :: Implementation :: PyPy',
             'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
             'Topic :: Software Development :: Libraries :: Python Modules'
         ],
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         name="fb_messenger",
         packages=["fb_messenger", "fb_messenger.types"],
         url="https://github.com/shananin/Fb_messanger",
-        version='0.2.1',
+        version='0.2.2',
         maintainer='Artem Shananin (Shananin)',
         maintainer_email='artem.shananin@gmail.com',
     )
