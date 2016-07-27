@@ -3,9 +3,11 @@ Attachments collection
 :see https://developers.facebook.com/docs/messenger-platform/send-api-reference
 """
 from __future__ import unicode_literals
+
 from six import string_types
-from .interfaces import IFBPayload, IButton, IGenericItem
+
 from .exceptions import IncorrectType
+from .interfaces import IFBPayload, IButton, IGenericItem
 
 
 class Text(IFBPayload):
@@ -13,12 +15,39 @@ class Text(IFBPayload):
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
     """
 
-    def __init__(self, text):
+    def __init__(self, text, quick_replies=None):
+        """
+        :type quick_replies: list[QuickReply]
+        """
         self.text = text
+        self.quick_replies = quick_replies
+
+    def to_dict(self):
+        data = {
+            'text': self.text,
+        }
+
+        if self.quick_replies:
+            data['quick_replies'] = [quick_reply.to_dict() for quick_reply in self.quick_replies]
+
+        return data
+
+
+class QuickReply(IButton):
+    """
+    :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
+    """
+
+    def __init__(self, title, payload, content_type='text'):
+        self.title = title
+        self.payload = payload
+        self.content_type = content_type
 
     def to_dict(self):
         return {
-            'text': self.text,
+            'content_type': self.content_type,
+            'title': self.title,
+            'payload': self.payload,
         }
 
 
@@ -51,13 +80,16 @@ class Buttons(IFBPayload):
     _buttons = []
 
     def __init__(self, text, buttons):
+        """
+        :type buttons: list[IButton]
+        """
         self.text = text
 
         for button in buttons:
             if not isinstance(button, IButton):
                 raise TypeError('You should use only IButton instances')
 
-        self._buttons.append(buttons)
+            self._buttons.append(button)
 
     def add_button(self, button):
         if not isinstance(button, IButton):
@@ -69,18 +101,13 @@ class Buttons(IFBPayload):
         self._buttons = []
 
     def to_dict(self):
-        buttons_dict = []
-
-        for button in self._buttons:
-            buttons_dict.append(button.to_dict())
-
         return {
             'attachment': {
                 'type': 'template',
                 'payload': {
                     'template_type': 'button',
                     'text': self.text,
-                    'buttons': buttons_dict
+                    'buttons': [button.to_dict() for button in self._buttons]
                 },
             },
         }
@@ -133,8 +160,6 @@ class GenericItem(IGenericItem):
         self.buttons = buttons
 
     def to_dict(self):
-        button_dicts = []
-
         data = {
             'title': self.title,
         }
@@ -149,10 +174,7 @@ class GenericItem(IGenericItem):
             data['subtitle'] = self.subtitle
 
         if self.buttons:
-            for button in self.buttons:
-                button_dicts.append(button.to_dict())
-
-            data['buttons'] = button_dicts
+            data['buttons'] = [button.to_dict() for button in self.buttons]
 
         return data
 
@@ -166,17 +188,12 @@ class Generic(IFBPayload):
         self.elements = elements
 
     def to_dict(self):
-        element_dicts = []
-
-        for element in self.elements:
-            element_dicts.append(element.to_dict())
-
         return {
             'attachment': {
                 'type': 'template',
                 'payload': {
                     'template_type': 'generic',
-                    'elements': element_dicts,
+                    'elements': [element.to_dict() for element in self.elements],
                 },
             },
         }
@@ -202,11 +219,6 @@ class Receipt(IFBPayload):
         self.adjustments = adjustments
 
     def to_dict(self):
-        element_dicts = []
-
-        for elem in self.elements:
-            element_dicts.append(elem.to_dict())
-
         data = {
             'attachment': {
                 'type': 'template',
@@ -216,7 +228,7 @@ class Receipt(IFBPayload):
                     'order_number': self.order_number,
                     'currency': self.currency,
                     'payment_method': self.payment_method,
-                    'elements': element_dicts,
+                    'elements': [element.to_dict() for element in self.elements],
                     'summary': self.summary.to_dict(),
                 },
             },
@@ -232,12 +244,7 @@ class Receipt(IFBPayload):
             data['address'] = self.address.to_dict()
 
         if self.adjustments:
-            adjustments_dicts = []
-
-            for elem in self.adjustments:
-                adjustments_dicts.append(elem.to_dict())
-
-            data['adjustments'] = adjustments_dicts
+            data['adjustments'] = [elem.to_dict() for elem in self.adjustments]
 
         return data
 

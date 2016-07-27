@@ -8,7 +8,8 @@ LOGGER = logger.get_logger(__name__)
 
 client = FBMessenger(ACCESS_TOKEN)
 
-text = attachments.Text('hello')
+quick_reply = attachments.QuickReply('Hi!', 'HI')
+text = attachments.Text('hello!', [quick_reply])
 
 response = client.send_attachment(RECIPIENT_ID, text)
 
