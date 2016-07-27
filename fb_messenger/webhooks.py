@@ -2,6 +2,8 @@
 Callbacks parser
 """
 from __future__ import unicode_literals
+
+from . import webhook_attachments
 from .types import webhook_types
 
 
@@ -65,12 +67,18 @@ class MessageReceived(Webhook):
         self.mid = payload['message'].get('mid')
         self.seq = payload['message'].get('seq')
         self.text = payload['message'].get('text')
-        self.attachments = payload['message'].get('attachments')
+        self.attachments = []
+        self.quick_reply_payload = None
 
         if 'quick_reply' in payload['message']:
             self.quick_reply_payload = payload['message']['quick_reply'].get('payload')
-        else:
-            self.quick_reply_payload = None
+
+        if 'attachments' in payload['message']:
+            for attachment_payload in payload['message']['attachments']:
+                parsed_attachment = webhook_attachments.parse_payload(attachment_payload)
+
+                if parsed_attachment:
+                    self.attachments.append(parsed_attachment)
 
 
 class MessageDelivered(Webhook):

@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
-from . import data
+
+from fb_messenger import webhook_attachments
 from fb_messenger import webhooks
+
+from . import data
 
 
 def test_authentication_webhook():
@@ -71,7 +74,21 @@ def test_account_linking_webhook():
     assert account_linking_unlinked.payload == payload
 
 
-def test_message_received_webhook():
+def test_message_received_webhook_without_quick_reply():
+    payload = data.message_receive_text_webhook_without_quick_reply
+    message_received = webhooks.MessageReceived(payload)
+
+    assert message_received.recipient_id == payload['recipient']['id']
+    assert message_received.sender_id == payload['sender']['id']
+    assert message_received.timestamp == payload['timestamp']
+    assert message_received.mid == payload['message']['mid']
+    assert message_received.seq == payload['message']['seq']
+    assert message_received.text == payload['message']['text']
+    assert message_received.quick_reply_payload is None
+    assert message_received.payload == payload
+
+
+def test_message_received_webhook_with_quick_reply():
     payload = data.message_receive_text_webhook
     message_received = webhooks.MessageReceived(payload)
 
@@ -80,7 +97,23 @@ def test_message_received_webhook():
     assert message_received.timestamp == payload['timestamp']
     assert message_received.mid == payload['message']['mid']
     assert message_received.seq == payload['message']['seq']
-    assert message_received.text == data.message_receive_text_webhook['message']['text']
+    assert message_received.text == payload['message']['text']
+    assert message_received.quick_reply_payload == payload['message']['quick_reply']['payload']
+    assert message_received.payload == payload
+
+
+def test_message_received_webhook_with_attachment():
+    payload = data.message_receive_text_webhook_with_image_attachment
+    message_received = webhooks.MessageReceived(payload)
+
+    assert message_received.recipient_id == payload['recipient']['id']
+    assert message_received.sender_id == payload['sender']['id']
+    assert message_received.timestamp == payload['timestamp']
+    assert message_received.mid == payload['message']['mid']
+    assert message_received.seq == payload['message']['seq']
+    assert message_received.text is None
+    assert message_received.quick_reply_payload is None
+    assert isinstance(message_received.attachments[0], webhook_attachments.Image)
     assert message_received.payload == payload
 
 

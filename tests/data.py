@@ -36,6 +36,43 @@ message_receive_text_webhook = {
     }
 }
 
+message_receive_text_webhook_without_quick_reply = {
+    "sender": {
+        "id": "USER_ID"
+    },
+    "recipient": {
+        "id": "PAGE_ID"
+    },
+    "timestamp": 1458692752478,
+    "message": {
+        "mid": "mid.1457764197618:41d102a3e1ae206a38",
+        "seq": 73,
+        "text": "hello, world!",
+    }
+}
+
+message_receive_text_webhook_with_image_attachment = {
+    "sender": {
+        "id": "USER_ID"
+    },
+    "recipient": {
+        "id": "PAGE_ID"
+    },
+    "timestamp": 1458692752478,
+    "message": {
+        "mid": "mid.1458696618141:b4ef9d19ec21086067",
+        "seq": 51,
+        "attachments": [
+            {
+                "type": "image",
+                "payload": {
+                    "url": "IMAGE_URL"
+                }
+            }
+        ]
+    }
+}
+
 message_receive_attachments_webhook = {
     "sender": {
         "id": "USER_ID"
