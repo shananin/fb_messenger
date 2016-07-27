@@ -84,7 +84,7 @@ class Buttons(IAttachment):
     def __init__(self, text, buttons):
         """
         :type text: str
-        :type buttons: list[ButtonWithWebUrl|ButtonWithPostback]
+        :type buttons: Iterable[ButtonWithWebUrl|ButtonWithPostback]
         """
         self.text = text
         self.buttons = buttons
@@ -155,7 +155,7 @@ class GenericSubElement(ISubElement):
         :type item_url: str
         :type image_url: str
         :type subtitle: str
-        :type buttons: list[ButtonWithWebUrl|ButtonWithPostback]
+        :type buttons: Iterable[ButtonWithWebUrl|ButtonWithPostback]
         """
         self.title = title
         self.item_url = item_url
@@ -190,7 +190,7 @@ class Generic(IAttachment):
 
     def __init__(self, generic_sub_elements):
         """
-        :type generic_sub_elements: list[GenericSubElement]
+        :type generic_sub_elements: Iterable[GenericSubElement]
         """
         self.generic_sub_elements = generic_sub_elements
 
@@ -219,7 +219,7 @@ class Receipt(IAttachment):
         :type order_number: str
         :type currency: str - 'USD', 'EUR'
         :type payment_method: str - 'Visa', 'MasterCard'
-        :type receipt_sub_elements: list[ReceiptSubElement]
+        :type receipt_sub_elements: Iterable[ReceiptSubElement]
         :type summary: Summary
         """
         self.recipient_name = recipient_name

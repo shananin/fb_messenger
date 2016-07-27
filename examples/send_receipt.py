@@ -8,7 +8,7 @@ LOGGER = logger.get_logger(__name__)
 
 client = FBMessenger(ACCESS_TOKEN, logger_level=logging.DEBUG)
 
-receipt_element1 = attachments.ReceiptElement(
+receipt_element1 = attachments.ReceiptSubElement(
     title='title1',
     subtitle='subtitle1',
     quantity=1,
@@ -17,7 +17,7 @@ receipt_element1 = attachments.ReceiptElement(
     image_url='http://solarviews.com/raw/earth/bluemarblewest.jpg'
 )
 
-receipt_element2 = attachments.ReceiptElement(
+receipt_element2 = attachments.ReceiptSubElement(
     title='title2',
     subtitle='subtitle2',
     quantity=2,
@@ -39,7 +39,7 @@ receipt = attachments.Receipt(
     currency='USD',
     payment_method='Visa',
     summary=summary,
-    elements=(receipt_element1, receipt_element2),
+    receipt_sub_elements=(receipt_element1, receipt_element2),
 )
 
 response = client.send_attachment(RECIPIENT_ID, receipt)

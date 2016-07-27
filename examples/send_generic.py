@@ -13,14 +13,14 @@ button2 = attachments.ButtonWithPostback('title2', 'POSTBACK1')
 
 buttons = attachments.Buttons('buttons group', buttons=(button1, button2))
 
-generic_item1 = attachments.GenericItem(
+generic_item1 = attachments.GenericSubElement(
     title='title1',
     image_url='http://solarviews.com/raw/earth/bluemarblewest.jpg',
     subtitle='subtitle1',
     buttons=(button1, button2),
 )
 
-generic_item2 = attachments.GenericItem(
+generic_item2 = attachments.GenericSubElement(
     title='title2',
     image_url='http://solarviews.com/raw/earth/bluemarblewest.jpg',
     subtitle='subtitle2',

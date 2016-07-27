@@ -1,6 +1,9 @@
+"""
+:see https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
+"""
 from __future__ import unicode_literals
 
-from types import webhook_attachment_types
+from .types import webhook_attachment_types
 
 
 def parse_payload(payload):
