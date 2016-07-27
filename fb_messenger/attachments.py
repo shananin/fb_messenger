@@ -4,19 +4,17 @@ Attachments collection
 """
 from __future__ import unicode_literals
 
-from six import string_types
-
-from .exceptions import IncorrectType
-from .interfaces import IFBPayload, IButton, IGenericItem
+from .interfaces import IAttachment, ISubElement
 
 
-class Text(IFBPayload):
+class Text(IAttachment):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/text-message
     """
 
     def __init__(self, text, quick_replies=None):
         """
+        :type text: str
         :type quick_replies: list[QuickReply]
         """
         self.text = text
@@ -33,12 +31,17 @@ class Text(IFBPayload):
         return data
 
 
-class QuickReply(IButton):
+class QuickReply(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
     """
 
     def __init__(self, title, payload, content_type='text'):
+        """
+        :type content_type: str
+        :type payload: str
+        :type title: str
+        """
         self.title = title
         self.payload = payload
         self.content_type = content_type
@@ -51,15 +54,15 @@ class QuickReply(IButton):
         }
 
 
-class Image(IFBPayload):
+class Image(IAttachment):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/image-attachment
     """
 
     def __init__(self, image_url):
-        if not isinstance(image_url, string_types):
-            raise IncorrectType('image_url should be str')
-
+        """
+        :type image_url: str
+        """
         self.image_url = image_url
 
     def to_dict(self):
@@ -73,32 +76,18 @@ class Image(IFBPayload):
         }
 
 
-class Buttons(IFBPayload):
+class Buttons(IAttachment):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
-    _buttons = []
 
     def __init__(self, text, buttons):
         """
-        :type buttons: list[IButton]
+        :type text: str
+        :type buttons: list[ButtonWithWebUrl|ButtonWithPostback]
         """
         self.text = text
-
-        for button in buttons:
-            if not isinstance(button, IButton):
-                raise TypeError('You should use only IButton instances')
-
-            self._buttons.append(button)
-
-    def add_button(self, button):
-        if not isinstance(button, IButton):
-            raise TypeError('You should use only IButton instances')
-
-        self._buttons.append(button)
-
-    def remove_buttons(self):
-        self._buttons = []
+        self.buttons = buttons
 
     def to_dict(self):
         return {
@@ -107,18 +96,22 @@ class Buttons(IFBPayload):
                 'payload': {
                     'template_type': 'button',
                     'text': self.text,
-                    'buttons': [button.to_dict() for button in self._buttons]
+                    'buttons': [button.to_dict() for button in self.buttons]
                 },
             },
         }
 
 
-class ButtonWithWebUrl(IButton):
+class ButtonWithWebUrl(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
 
     def __init__(self, title, web_url):
+        """
+        :type title: str
+        :type web_url: str
+        """
         self.title = title
         self.web_url = web_url
 
@@ -130,12 +123,16 @@ class ButtonWithWebUrl(IButton):
         }
 
 
-class ButtonWithPostback(IButton):
+class ButtonWithPostback(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/button-template
     """
 
     def __init__(self, title, payload):
+        """
+        :type title: str
+        :type payload: str
+        """
         self.title = title
         self.payload = payload
 
@@ -147,12 +144,19 @@ class ButtonWithPostback(IButton):
         }
 
 
-class GenericItem(IGenericItem):
+class GenericSubElement(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """
 
     def __init__(self, title, item_url=None, image_url=None, subtitle=None, buttons=None):
+        """
+        :type title: str
+        :type item_url: str
+        :type image_url: str
+        :type subtitle: str
+        :type buttons: list[ButtonWithWebUrl|ButtonWithPostback]
+        """
         self.title = title
         self.item_url = item_url
         self.image_url = image_url
@@ -179,13 +183,16 @@ class GenericItem(IGenericItem):
         return data
 
 
-class Generic(IFBPayload):
+class Generic(IAttachment):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/generic-template
     """
 
-    def __init__(self, elements):
-        self.elements = elements
+    def __init__(self, generic_sub_elements):
+        """
+        :type generic_sub_elements: list[GenericSubElement]
+        """
+        self.generic_sub_elements = generic_sub_elements
 
     def to_dict(self):
         return {
@@ -193,25 +200,33 @@ class Generic(IFBPayload):
                 'type': 'template',
                 'payload': {
                     'template_type': 'generic',
-                    'elements': [element.to_dict() for element in self.elements],
+                    'elements': [element.to_dict() for element in self.generic_sub_elements],
                 },
             },
         }
 
 
-class Receipt(IFBPayload):
+class Receipt(IAttachment):
     """
     TODO: complete receipt attachment
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
-    def __init__(self, recipient_name, order_number, currency, payment_method, elements, summary,
-                 timestamp=None, order_url=None, address=None, adjustments=None):
+    def __init__(self, recipient_name, order_number, currency, payment_method, receipt_sub_elements,
+                 summary, timestamp=None, order_url=None, address=None, adjustments=None):
+        """
+        :type recipient_name: str
+        :type order_number: str
+        :type currency: str - 'USD', 'EUR'
+        :type payment_method: str - 'Visa', 'MasterCard'
+        :type receipt_sub_elements: list[ReceiptSubElement]
+        :type summary: Summary
+        """
         self.recipient_name = recipient_name
         self.order_number = order_number
         self.currency = currency
         self.payment_method = payment_method
-        self.elements = elements
+        self.receipt_sub_elements = receipt_sub_elements
         self.summary = summary
         self.timestamp = timestamp
         self.order_url = order_url
@@ -228,7 +243,7 @@ class Receipt(IFBPayload):
                     'order_number': self.order_number,
                     'currency': self.currency,
                     'payment_method': self.payment_method,
-                    'elements': [element.to_dict() for element in self.elements],
+                    'elements': [element.to_dict() for element in self.receipt_sub_elements],
                     'summary': self.summary.to_dict(),
                 },
             },
@@ -249,12 +264,18 @@ class Receipt(IFBPayload):
         return data
 
 
-class Summary(IFBPayload):
+class Summary(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
     def __init__(self, total_cost, subtotal=None, shipping_cost=None, total_tax=None):
+        """
+        :type total_cost: float|int
+        :type subtotal: float|int
+        :type shipping_cost: float|int
+        :type total_tax: float|int
+        """
         self.total_cost = total_cost
         self.subtotal = subtotal
         self.shipping_cost = shipping_cost
@@ -277,13 +298,21 @@ class Summary(IFBPayload):
         return data
 
 
-class ReceiptElement(IFBPayload):
+class ReceiptSubElement(ISubElement):
     """
     :see https://developers.facebook.com/docs/messenger-platform/send-api-reference/receipt-template
     """
 
     def __init__(self, title, subtitle=None, quantity=None,
                  price=None, currency=None, image_url=None):
+        """
+        :type title: str
+        :type subtitle: str
+        :type quantity: int
+        :type price: float|int
+        :type currency: str
+        :type image_url: str
+        """
         self.title = title
         self.subtitle = subtitle
         self.quantity = quantity

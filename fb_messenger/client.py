@@ -14,16 +14,19 @@ client = FBMessenger(access_token='ADSD...')
 
 """
 from __future__ import unicode_literals
+
 import logging
+
 import requests
+
+from . import const
+from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType, InvalidBody
+from .interfaces import IAttachment, ISubElement
 from .types import (
     action_types,
     webhook_types,
     notification_types,
 )
-from . import const
-from .exceptions import UnknownAction, MessengerAPIError, UnknownNotificationType, InvalidBody
-from .interfaces import IFBPayload
 from .webhooks import parse_payload
 
 
@@ -48,10 +51,12 @@ class FBMessenger(object):
         if notification_type not in notification_types.ALL_NOTIFICATION_TYPES:
             raise UnknownNotificationType
 
-        if isinstance(attachment, IFBPayload):
+        if isinstance(attachment, IAttachment):
             payload = _format_attachment_payload(recipient_id, attachment.to_dict(), notification_type)
+        elif isinstance(attachment, ISubElement):
+            raise TypeError('This is SubElement. You should use only Attachment')
         else:
-            raise TypeError
+            raise TypeError('You must use attachments only who implemented IAttachment interface')
 
         return Response(self._send_request(payload))
 

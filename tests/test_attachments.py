@@ -118,22 +118,22 @@ def test_generic_element():
     payload2 = 'test_payload'
     button2 = attachments.ButtonWithPostback(title2, payload2)
 
-    assert attachments.GenericItem(title).to_dict() == {
+    assert attachments.GenericSubElement(title).to_dict() == {
         'title': title
     }
 
-    assert attachments.GenericItem(title, item_url=item_url).to_dict() == {
+    assert attachments.GenericSubElement(title, item_url=item_url).to_dict() == {
         'title': title,
         'item_url': item_url,
     }
 
-    assert attachments.GenericItem(title=title, item_url=item_url, image_url=image_url).to_dict() == {
+    assert attachments.GenericSubElement(title=title, item_url=item_url, image_url=image_url).to_dict() == {
         'title': title,
         'item_url': item_url,
         'image_url': image_url,
     }
 
-    assert attachments.GenericItem(
+    assert attachments.GenericSubElement(
         title=title,
         item_url=item_url,
         image_url=image_url,
@@ -145,7 +145,7 @@ def test_generic_element():
                'subtitle': subtitle,
            }
 
-    assert attachments.GenericItem(
+    assert attachments.GenericSubElement(
         title=title,
         item_url=item_url,
         image_url=image_url,
@@ -173,10 +173,10 @@ def test_generic_element():
 
 def test_generic():
     title1 = 'generic_elem_title1'
-    generic_elem1 = attachments.GenericItem(title1)
+    generic_elem1 = attachments.GenericSubElement(title1)
 
     title2 = 'generic_elem_title2'
-    generic_elem2 = attachments.GenericItem(title2)
+    generic_elem2 = attachments.GenericSubElement(title2)
 
     assert attachments.Generic([generic_elem1, generic_elem2]).to_dict() == {
         'attachment': {
@@ -233,29 +233,29 @@ def test_receipt_element():
     currency = 'USD'
     image_url = 'http://example.com/img.jpg'
 
-    assert attachments.ReceiptElement(title).to_dict() == {
+    assert attachments.ReceiptSubElement(title).to_dict() == {
         'title': title,
     }
 
-    assert attachments.ReceiptElement(title, subtitle).to_dict() == {
+    assert attachments.ReceiptSubElement(title, subtitle).to_dict() == {
         'title': title,
         'subtitle': subtitle,
     }
 
-    assert attachments.ReceiptElement(title, subtitle, quantity).to_dict() == {
+    assert attachments.ReceiptSubElement(title, subtitle, quantity).to_dict() == {
         'title': title,
         'subtitle': subtitle,
         'quantity': quantity,
     }
 
-    assert attachments.ReceiptElement(title, subtitle, quantity, price).to_dict() == {
+    assert attachments.ReceiptSubElement(title, subtitle, quantity, price).to_dict() == {
         'title': title,
         'subtitle': subtitle,
         'quantity': quantity,
         'price': price,
     }
 
-    assert attachments.ReceiptElement(title, subtitle, quantity, price, currency).to_dict() == {
+    assert attachments.ReceiptSubElement(title, subtitle, quantity, price, currency).to_dict() == {
         'title': title,
         'subtitle': subtitle,
         'quantity': quantity,
@@ -263,7 +263,7 @@ def test_receipt_element():
         'currency': currency,
     }
 
-    assert attachments.ReceiptElement(title, subtitle, quantity, price, currency, image_url).to_dict() == {
+    assert attachments.ReceiptSubElement(title, subtitle, quantity, price, currency, image_url).to_dict() == {
         'title': title,
         'subtitle': subtitle,
         'quantity': quantity,
@@ -279,7 +279,7 @@ def test_receipe():
     currency = 'USD'
     payment_method = 'Visa'
     elem_title = 'elem_title'
-    elements = [attachments.ReceiptElement(elem_title)]
+    elements = [attachments.ReceiptSubElement(elem_title)]
     summary = attachments.Summary(26.00)
 
     assert attachments.Receipt(

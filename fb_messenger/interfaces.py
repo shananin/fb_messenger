@@ -4,16 +4,11 @@ Interfaces collection
 from __future__ import unicode_literals
 
 
-class IFBPayload(object):
+class IAttachment(object):
     def to_dict(self):
         raise NotImplementedError('Should have implemented to_dict method')
 
 
-class IButton(object):
-    def to_dict(self):
-        raise NotImplementedError('Should have implemented to_dict method')
-
-
-class IGenericItem(object):
+class ISubElement(object):
     def to_dict(self):
         raise NotImplementedError('Should have implemented to_dict method')
