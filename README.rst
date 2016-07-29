@@ -18,7 +18,7 @@ Python API client for FB Messenger (under development)
     
     An API wrapper for [Facebook Messenger Platform](https://developers.facebook.com/docs/messenger-platform) API. Supports all methods and types of responses.
     
-## Facebook Messenger Platform
+## Facebook Messenger Platform.
 >The Messenger Platform gives you the ability to have conversations with people on Messenger. We've added new tools for you to build and promote your bot so you can create a custom experience for your unique audience.
 >Using plugins, codes and links people can discover your bot and start conversations. Using Customer Matching, you can reach people on Messenger if you have their phone number and they've agreed to be contacted by you.
 
